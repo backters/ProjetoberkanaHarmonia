@@ -394,7 +394,7 @@ function WelcomeView({
         </ActionButton>
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        12 pilares fundamentais · escala de 1 a 9 · cerca de 2 minutos
+        12 pilares fundamentais · cerca de 2 minutos
       </p>
     </section>
   );
