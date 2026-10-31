@@ -99,8 +99,7 @@ const FREQUENCIES = [
   { name: 'Iluminação', hz: 700 },
 ];
 
-const WHATSAPP_URL =
-  'https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20meu%20Diagn%C3%B3stico%20da%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o.';
+const WHATSAPP_PHONE = '5511930057499';
 
 // Returns dynamic title according to selected life focus area
 export function getAppTitle(focusArea: LifeFocusArea): { main: string; complement: string; full: string } {
@@ -547,6 +546,18 @@ function ResultView({
   const currentFrequency = FREQUENCIES[freqIndex];
   const freqPosition = (freqIndex / (FREQUENCIES.length - 1)) * 100;
 
+  // Dynamic WhatsApp booking link matching screenshot format:
+  // "Olá Fabiana! Fiz o [Nome do Diagnóstico] com média geral de [X.X]/9. O principal ponto a harmonizar foi "[Pilar]" e gostaria de agendar minha devolutiva completa."
+  const lowestPillar = harmonizationPoints[0] || sortedPillars[sortedPillars.length - 1];
+  const lowestPillarName = lowestPillar ? lowestPillar.name : 'Equilíbrio Emocional';
+  const fullDiagnosisTitle =
+    focusArea === 'Outro' && otherAreaText.trim()
+      ? `${titleInfo.full} (${otherAreaText.trim()})`
+      : titleInfo.full;
+
+  const whatsappMessage = `Olá Fabiana! Fiz o ${fullDiagnosisTitle} com média geral de ${average.toFixed(1)}/9. O principal ponto a harmonizar foi "${lowestPillarName}" e gostaria de agendar minha devolutiva completa.`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(whatsappMessage)}`;
+
   return (
     <section className="fade-up space-y-6">
       {/* Header */}
@@ -670,12 +681,12 @@ function ResultView({
           e receba um atendimento personalizado para elevar sua frequência.
         </p>
         <a
-          href={WHATSAPP_URL}
+          href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
           className="mt-6 inline-flex rounded-full bg-card px-8 py-4 font-semibold text-primary shadow-soft transition-transform hover:scale-105 cursor-pointer"
         >
-          Agendar minha sessão ✦
+          Agendar minha devolutiva completa ✦
         </a>
       </div>
 
