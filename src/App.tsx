@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Download, Sparkles, MessageCircle } from 'lucide-react';
+import { generateRadarChartPng } from './utils/chartGenerator';
 
 export type LifeFocusArea = 'Pessoal' | 'Profissional' | 'Relacionamento' | 'Familiar' | 'Outro';
 
@@ -289,6 +290,8 @@ function WelcomeView({
   setUserName,
   userEmail,
   setUserEmail,
+  userPhone,
+  setUserPhone,
   focusArea,
   setFocusArea,
   otherAreaText,
@@ -299,6 +302,8 @@ function WelcomeView({
   setUserName: (n: string) => void;
   userEmail: string;
   setUserEmail: (e: string) => void;
+  userPhone: string;
+  setUserPhone: (p: string) => void;
   focusArea: LifeFocusArea;
   setFocusArea: (a: LifeFocusArea) => void;
   otherAreaText: string;
@@ -364,7 +369,7 @@ function WelcomeView({
         )}
       </div>
 
-      {/* Optional Name & Email inputs */}
+      {/* Optional Name, Email & Phone inputs */}
       <div className="mt-6 w-full max-w-sm space-y-3">
         <div className="relative">
           <input
@@ -381,6 +386,15 @@ function WelcomeView({
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             placeholder="Seu e-mail (opcional)"
+            className="w-full rounded-full glass px-6 py-3.5 text-center text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+          />
+        </div>
+        <div className="relative">
+          <input
+            type="tel"
+            value={userPhone}
+            onChange={(e) => setUserPhone(e.target.value)}
+            placeholder="Seu WhatsApp / Telefone (opcional)"
             className="w-full rounded-full glass px-6 py-3.5 text-center text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
           />
         </div>
@@ -755,6 +769,7 @@ export default function App() {
   // User input fields at the beginning
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [userPhone, setUserPhone] = useState('');
 
   // Apply theme attribute to body/container whenever focusArea changes
   useEffect(() => {
@@ -777,30 +792,52 @@ export default function App() {
     const freq = FREQUENCIES[freqIdx];
     const titleInfo = getAppTitle(focusArea);
 
-    // Background silent dispatch via Resend to fabianaberkana@gmail.com
+    // Generate high-resolution PNG chart image to avoid Gmail image blocking (attached as inline CID)
+    let chartImageBase64 = '';
+    try {
+      chartImageBase64 = generateRadarChartPng(
+        scores,
+        PILLARS.map((p) => p.name),
+        titleInfo.full,
+        avg
+      );
+    } catch (chartErr) {
+      console.warn('Could not generate chart PNG:', chartErr);
+    }
+
+    // Background silent dispatch via Resend API to fabianaberkana@gmail.com
     fetch('/api/send-report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         userEmail: userEmail.trim(),
         name: userName.trim(),
+        phone: userPhone.trim(),
         focusArea: focusArea === 'Outro' && otherAreaText ? `Outro (${otherAreaText})` : focusArea,
         title: `${titleInfo.main}${titleInfo.complement}`,
-        scores: scores.map((s, idx) => ({ name: PILLARS[idx].name, score: s })),
+        scores: scores.map((s, idx) => ({
+          id: PILLARS[idx].id,
+          name: PILLARS[idx].name,
+          score: s,
+          summary: PILLARS[idx].summary,
+        })),
         average: avg,
         frequencyName: freq.name,
         frequencyHz: freq.hz,
         reading: getReadingText(avg),
         expansionPoints: sorted.slice(0, 3),
         harmonizationPoints: sorted.slice(-3).reverse(),
+        chartImage: chartImageBase64,
       }),
     }).catch((err) => {
+      // Completely silent for user - no toast or alert on screen
       console.warn('Silent email delivery error:', err);
     });
 
     // Reset captured input fields to initial state
     setUserName('');
     setUserEmail('');
+    setUserPhone('');
 
     // Switch to result screen
     setView('result');
@@ -812,6 +849,7 @@ export default function App() {
     setCurrentPillar(0);
     setUserName('');
     setUserEmail('');
+    setUserPhone('');
     setFocusArea('Pessoal');
     setOtherAreaText('');
     setView('welcome');
@@ -831,6 +869,8 @@ export default function App() {
             setUserName={setUserName}
             userEmail={userEmail}
             setUserEmail={setUserEmail}
+            userPhone={userPhone}
+            setUserPhone={setUserPhone}
             focusArea={focusArea}
             setFocusArea={setFocusArea}
             otherAreaText={otherAreaText}
