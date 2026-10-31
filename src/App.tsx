@@ -108,7 +108,7 @@ export function getAppTitle(focusArea: LifeFocusArea): { main: string; complemen
   if (focusArea === 'Outro') {
     return { main: base, complement: '', full: base };
   }
-  const complement = ` – ${focusArea}`;
+  const complement = ` ${focusArea}`;
   return { main: base, complement, full: `${base}${complement}` };
 }
 
