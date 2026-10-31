@@ -78,8 +78,8 @@ function createEmailTemplate(params: {
         <p style="font-size: 14px; color: #5B215E; margin-bottom: 14px;">
           Deseja agendar uma sessão individual com Fabiana Berkana para harmonizar seus pilares?
         </p>
-        <a href="https://wa.me/5511930057499?text=Ol%C3%A1%20Fabiana!%20Fiz%20meu%20Diagn%C3%B3stico%20da%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20meu%20atendimento%20individualizado%20pelo%20M%C3%A9todo%20Berkana." target="_blank" class="cta-btn">
-          📲 Me chame agora no WhatsApp (11) 93005-7499 ✦
+        <a href="https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20minha%20Roda%20da%20Vida%20de%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o." target="_blank" class="cta-btn">
+          Agendar Minha Sessão com Fabiana Berkana ✦
         </a>
       </div>
     </div>
