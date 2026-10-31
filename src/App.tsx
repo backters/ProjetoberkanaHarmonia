@@ -103,12 +103,13 @@ const WHATSAPP_URL =
   'https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20meu%20Diagn%C3%B3stico%20da%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o.';
 
 // Returns dynamic title according to selected life focus area
-export function getAppTitle(focusArea: LifeFocusArea): { main: string; complement: string } {
+export function getAppTitle(focusArea: LifeFocusArea): { main: string; complement: string; full: string } {
   const base = 'Diagnóstico da Harmonia Energética';
   if (focusArea === 'Outro') {
-    return { main: base, complement: '' };
+    return { main: base, complement: '', full: base };
   }
-  return { main: base, complement: ` – ${focusArea}` };
+  const complement = ` – ${focusArea}`;
+  return { main: base, complement, full: `${base}${complement}` };
 }
 
 // Sacred Geometry Mandala
@@ -318,13 +319,8 @@ function WelcomeView({
       </p>
 
       {/* Main Dynamic Title according to chosen life focus area */}
-      <h1 className="mt-6 text-3xl font-medium leading-tight text-foreground sm:text-5xl max-w-2xl">
-        Diagnóstico da Harmonia Energética
-        {titleInfo.complement ? (
-          <span className="block text-2xl sm:text-4xl mt-1 text-primary italic font-display">
-            {titleInfo.complement.replace(/^\s*–\s*/, '')}
-          </span>
-        ) : null}
+      <h1 className="mt-6 text-3xl font-medium leading-tight text-foreground sm:text-5xl max-w-3xl">
+        {titleInfo.full}
       </h1>
 
       <p className="mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
@@ -724,6 +720,7 @@ export default function App() {
   useEffect(() => {
     const themeKey = focusArea.toLowerCase();
     document.documentElement.setAttribute('data-theme', themeKey);
+    document.title = getAppTitle(focusArea).full;
   }, [focusArea]);
 
   // Finished assessment handler
