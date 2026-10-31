@@ -6,6 +6,7 @@ export type LifeFocusArea = 'Pessoal' | 'Profissional' | 'Relacionamento' | 'Fam
 export interface PillarDescription {
   id: number;
   name: string;
+  question: string;
   summary: string;
 }
 
@@ -13,72 +14,84 @@ const PILLARS: PillarDescription[] = [
   {
     id: 1,
     name: 'Plenitude e Felicidade',
+    question: 'O quanto você se sente realizada, alegre e em paz com a área que está analisando?',
     summary:
       'Representa o grau de satisfação e alegria com a própria vida. Envolve sentir-se realizado, conectado consigo mesmo e grato pelo caminho trilhado.',
   },
   {
     id: 2,
     name: 'Equilíbrio Emocional',
+    question: 'Como você lida com os desafios e os momentos de pressão nesta área, sem perder a sua centralidade?',
     summary:
       'Refere-se à capacidade de lidar com emoções e desafios sem desestabilizar o bem-estar. Inclui autocontrole, resiliência e a habilidade de transformar situações difíceis em aprendizado.',
   },
   {
     id: 3,
     name: 'Desenvolvimento Intelectual',
+    question: 'O quanto você investe em aprendizado, clareza mental e evolução em relação a este tema?',
     summary:
       'Relaciona-se ao crescimento mental e à busca contínua por conhecimento. O aprendizado constante expande horizontes, fortalece a mente e abre novas possibilidades na vida.',
   },
   {
     id: 4,
     name: 'Contribuição Social',
+    question: 'Qual é a sensação de pertencimento, valor e impacto positivo que você percebe nesta área da sua vida?',
     summary:
       'Avalia o impacto positivo na sociedade e a sensação de pertencimento. Doar tempo, conhecimento ou energia para ajudar o próximo fortalece o sentido de propósito e a conexão com o mundo.',
   },
   {
     id: 5,
     name: 'Saúde e Disposição',
+    question: 'Como está a sua vitalidade, a sua energia física e a leveza ao lidar com esta questão?',
     summary:
       'Representa a vitalidade e os cuidados com o corpo. Uma boa saúde física influencia diretamente o bem-estar emocional, a produtividade e a capacidade de aproveitar a vida.',
   },
   {
     id: 6,
     name: 'Vida Social',
+    question: 'De que forma as suas trocas e o apoio das pessoas ao redor influenciam positivamente esta área?',
     summary:
       'Reflete a qualidade dos relacionamentos interpessoais e a capacidade de construir conexões significativas. A troca de experiências e o apoio mútuo são fundamentais para o equilíbrio emocional.',
   },
   {
     id: 7,
     name: 'Espiritualidade',
+    question: 'O quanto você sente que este aspecto da sua vida está alinhado com o seu propósito maior e com a sua verdade?',
     summary:
       'Relaciona-se à conexão com o universo e com o próprio propósito. Ter uma prática espiritual, independente de crença religiosa, traz clareza, paz e alinhamento energético.',
   },
   {
     id: 8,
     name: 'Relacionamento Familiar',
+    question: 'Como está a harmonia, a base e a fluidez das relações que sustentam este aspecto da sua vida?',
     summary:
       'Representa a harmonia e a qualidade das relações com a família. Equilibrar laços familiares, resolver conflitos e fortalecer vínculos contribui para uma base emocional sólida.',
   },
   {
     id: 9,
     name: 'Relacionamento Amoroso',
+    question: 'Como você avalia a troca de afeto, a cumplicidade e o equilíbrio entre dar e receber nesta área?',
     summary:
       'Refere-se à vida afetiva e à troca energética dentro de uma relação amorosa. Inclui a construção de confiança, cumplicidade e equilíbrio entre dar e receber amor.',
   },
   {
     id: 10,
     name: 'Recursos Financeiros',
+    question: 'Como você se sente em relação à estabilidade, à prosperidade e ao fluxo de recursos ligados a este tema?',
     summary:
       'Avalia a estabilidade e segurança financeira. A relação com o dinheiro reflete diretamente no nível de tranquilidade e liberdade para realizar sonhos e projetos.',
   },
   {
     id: 11,
     name: 'Hobbies e Diversão',
+    question: 'Você consegue encontrar momentos de leveza, prazer e descontração dentro desta área?',
     summary:
       'Representa o tempo dedicado ao lazer e às atividades que trazem prazer e leveza para o dia a dia. Ter momentos de diversão é essencial para manter a energia em alta.',
   },
   {
     id: 12,
     name: 'Realização Profissional',
+    question: 'O quanto você se sente realizada, motivada e produtiva em relação a esta escolha?',
     summary:
       'Relaciona-se à satisfação e propósito na carreira. Estar alinhado com a missão de vida no trabalho gera motivação, crescimento e um fluxo positivo de energia.',
   },
@@ -449,10 +462,13 @@ function QuizView({
           {currentPillar.id}. {currentPillar.name}
         </h2>
 
-        {/* Detailed exemplification of what this area represents */}
-        <div className="mt-4 max-w-xl mx-auto p-4 rounded-2xl bg-card/60 border border-border/80 text-center">
-          <p className="text-xs sm:text-sm leading-relaxed text-foreground/80 italic font-medium">
-            "{currentPillar.summary}"
+        {/* Guiding Question & Detailed exemplification */}
+        <div className="mt-5 max-w-xl mx-auto p-5 rounded-2xl bg-card/75 border border-border/80 shadow-soft text-center">
+          <p className="text-sm sm:text-base leading-relaxed text-foreground font-medium">
+            "{currentPillar.question}"
+          </p>
+          <p className="mt-2.5 text-xs text-muted-foreground/90 border-t border-border/50 pt-2.5 leading-normal">
+            {currentPillar.summary}
           </p>
         </div>
 
@@ -530,7 +546,12 @@ function ResultView({
   const sortedPillars = useMemo(
     () =>
       scores
-        .map((score, i) => ({ score, name: PILLARS[i].name, summary: PILLARS[i].summary }))
+        .map((score, i) => ({
+          score,
+          name: PILLARS[i].name,
+          question: PILLARS[i].question,
+          summary: PILLARS[i].summary,
+        }))
         .sort((a, b) => b.score - a.score),
     [scores]
   );
@@ -546,8 +567,7 @@ function ResultView({
   const currentFrequency = FREQUENCIES[freqIndex];
   const freqPosition = (freqIndex / (FREQUENCIES.length - 1)) * 100;
 
-  // Dynamic WhatsApp booking link matching screenshot format:
-  // "Olá Fabiana! Fiz o [Nome do Diagnóstico] com média geral de [X.X]/9. O principal ponto a harmonizar foi "[Pilar]" e gostaria de agendar minha devolutiva completa."
+  // Dynamic WhatsApp booking link matching client requirements
   const lowestPillar = harmonizationPoints[0] || sortedPillars[sortedPillars.length - 1];
   const lowestPillarName = lowestPillar ? lowestPillar.name : 'Equilíbrio Emocional';
   const fullDiagnosisTitle =
@@ -555,7 +575,7 @@ function ResultView({
       ? `${titleInfo.full} (${otherAreaText.trim()})`
       : titleInfo.full;
 
-  const whatsappMessage = `Olá Fabiana! Fiz o ${fullDiagnosisTitle} com média geral de ${average.toFixed(1)}/9. O principal ponto a harmonizar foi "${lowestPillarName}" e gostaria de agendar minha devolutiva completa.`;
+  const whatsappMessage = `Olá Fabiana! Fiz o ${fullDiagnosisTitle} com média geral de ${average.toFixed(1)}/9. O principal ponto a harmonizar foi "${lowestPillarName}" e gostaria de agendar meu atendimento individualizado pelo Método Berkana.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -656,14 +676,17 @@ function ResultView({
             {PILLARS.map((p) => {
               const currentVal = scores[p.id - 1];
               return (
-                <div key={p.id} className="p-3 rounded-xl bg-card/60 border border-border/80">
-                  <div className="flex justify-between items-center mb-1">
+                <div key={p.id} className="p-3.5 rounded-xl bg-card/60 border border-border/80">
+                  <div className="flex justify-between items-center mb-1.5">
                     <span className="font-bold text-foreground text-sm">
                       {p.id}. {p.name}
                     </span>
                     <span className="font-bold text-primary">{currentVal}/9</span>
                   </div>
-                  <p>{p.summary}</p>
+                  <p className="text-foreground/90 font-medium italic mb-1">
+                    "{p.question}"
+                  </p>
+                  <p className="text-[11px] leading-normal">{p.summary}</p>
                 </div>
               );
             })}
@@ -671,23 +694,35 @@ function ResultView({
         </div>
       </div>
 
-      {/* Call To Action Box */}
-      <div className="rounded-3xl bg-gradient-primary p-8 text-center text-primary-foreground shadow-soft sm:p-12">
-        <h2 className="text-3xl font-medium sm:text-4xl">
-          Pronta para harmonizar sua energia?
+      {/* Call To Action Box - Sugestão de Texto para o Final do Relatório Automático */}
+      <div className="rounded-3xl bg-gradient-primary p-7 sm:p-10 text-center text-primary-foreground shadow-soft">
+        <h2 className="text-2xl sm:text-4xl font-medium tracking-tight">
+          O que o seu reflexo está te mostrando?
         </h2>
-        <p className="mx-auto mt-3 max-w-md opacity-90">
-          Agende uma sessão com Fabiana Berkana, taróloga e terapeuta energética familiar,
-          e receba um atendimento personalizado para elevar sua frequência.
-        </p>
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-card px-8 py-4 font-semibold text-primary shadow-soft transition-transform hover:scale-105 cursor-pointer"
-        >
-          Agendar minha devolutiva completa ✦
-        </a>
+
+        <div className="mx-auto mt-4 max-w-xl space-y-3.5 text-xs sm:text-sm leading-relaxed opacity-95 text-left sm:text-center">
+          <p>
+            "Ao preencher este mapa, você deu o primeiro passo: olhou para a sua realidade através da lentes da observadora. O que você viu agora é apenas a sua percepção consciente do momento.
+          </p>
+          <p>
+            Mas qual é a raiz invisível desses bloqueios? Onde a sua energia real está realmente drenada ou travada?
+            Para irmos além da autoavaliação e fazermos um <strong>Diagnóstico Energético Real</strong>, identificando os nós ocultos e o tratamento ideal para harmonizar as áreas em desequilíbrio:
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-col items-center">
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-card px-8 py-4 font-semibold text-primary shadow-soft transition-transform hover:scale-105 active:scale-95 cursor-pointer text-sm sm:text-base"
+          >
+            📲 Me chame agora no WhatsApp (11) 93005-7499
+          </a>
+          <p className="mt-3 text-xs opacity-90 max-w-md">
+            para agendar o seu atendimento individualizado pelo Método Berkana!
+          </p>
+        </div>
       </div>
 
       {/* Bottom Actions */}
