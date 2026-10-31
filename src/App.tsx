@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Download } from 'lucide-react';
+import { Download, Sparkles, MessageCircle } from 'lucide-react';
 
 export type LifeFocusArea = 'Pessoal' | 'Profissional' | 'Relacionamento' | 'Familiar' | 'Outro';
 
@@ -671,23 +671,51 @@ function ResultView({
         </div>
       </div>
 
-      {/* Call To Action Box */}
-      <div className="rounded-3xl bg-gradient-primary p-8 text-center text-primary-foreground shadow-soft sm:p-12">
-        <h2 className="text-3xl font-medium sm:text-4xl">
-          Pronta para harmonizar sua energia?
-        </h2>
-        <p className="mx-auto mt-3 max-w-md opacity-90">
-          Agende uma sessão com Fabiana Berkana, taróloga e terapeuta energética familiar,
-          e receba um atendimento personalizado para elevar sua frequência.
-        </p>
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-flex rounded-full bg-card px-8 py-4 font-semibold text-primary shadow-soft transition-transform hover:scale-105 cursor-pointer"
-        >
-          Agendar minha devolutiva completa ✦
-        </a>
+      {/* Call To Action Box - Devolutiva Completa */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-primary p-8 text-center text-primary-foreground shadow-soft sm:p-12 border border-white/20">
+        {/* Subtle decorative glow */}
+        <div className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full bg-white/15 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-black/10 blur-2xl" />
+
+        <div className="relative z-10 max-w-2xl mx-auto">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white shadow-sm border border-white/20 mb-4">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Diagnóstico Profundo & Harmonização</span>
+          </div>
+
+          {/* Bold headline requested by user */}
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white drop-shadow-sm leading-tight">
+            O que o seu reflexo está te mostrando?
+          </h2>
+
+          {/* Persuasive copy */}
+          <div className="mt-5 space-y-3 max-w-xl mx-auto text-sm sm:text-base leading-relaxed text-white/95">
+            <p className="font-medium text-base sm:text-lg text-white">
+              Sua autoavaliação revelou como você percebe seu momento atual. Mas será que existem bloqueios que ainda não consegue enxergar?
+            </p>
+            <p className="opacity-90">
+              Descubra o que está por trás dos seus desequilíbrios e receba uma devolutiva completa com orientações para o seu processo de harmonização.
+            </p>
+          </div>
+
+          {/* Main Action Button */}
+          <div className="mt-8 flex flex-col items-center">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 sm:px-10 sm:py-4.5 font-bold text-primary shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/95 cursor-pointer ring-4 ring-white/25 text-base sm:text-lg"
+            >
+              <MessageCircle className="w-5 h-5 transition-transform group-hover:scale-110" />
+              <span>Receber Minha Devolutiva Completa</span>
+              <span className="text-primary/70">✦</span>
+            </a>
+            <p className="mt-3.5 text-xs font-medium text-white/80">
+              Atendimento individualizado com Fabiana Berkana via WhatsApp
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Bottom Actions */}
