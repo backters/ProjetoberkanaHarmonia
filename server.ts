@@ -90,7 +90,7 @@ function createEmailTemplate(params: {
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Seu Mapeamento Energético – Método Berkana de Harmonia de Vida</title>
+  <title>Seu Mapeamento Energético – Harmonia de Vida</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FAF5F8; color: #2D1A2E; margin: 0; padding: 24px; }
     .container { max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #F0D5E5; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(180, 50, 150, 0.08); }
@@ -117,7 +117,7 @@ function createEmailTemplate(params: {
   <div class="container">
     <div class="header">
       <p>Fabiana Berkana · Taróloga & Terapeuta Energética Familiar</p>
-      <h1>Diagnóstico da Harmonia Energética (Método Berkana)</h1>
+      <h1>Diagnóstico da Harmonia Energética</h1>
     </div>
 
     <div class="content">
@@ -154,14 +154,14 @@ function createEmailTemplate(params: {
         <p style="font-size: 14px; color: #5B215E; margin-bottom: 14px;">
           Deseja agendar uma sessão individual com Fabiana Berkana para harmonizar seus pilares?
         </p>
-        <a href="https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20minha%20Roda%20da%20Vida%20pelo%20M%C3%A9todo%20Berkana%20de%20Harmonia%20de%20Vida%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o." target="_blank" class="cta-btn">
+        <a href="https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20minha%20Roda%20da%20Vida%20de%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o." target="_blank" class="cta-btn">
           Agendar Minha Sessão com Fabiana Berkana ✦
         </a>
       </div>
     </div>
 
     <div class="footer">
-      <p>© ${new Date().getFullYear()} Fabiana Berkana · Método Berkana de Harmonia de Vida</p>
+      <p>© ${new Date().getFullYear()} Fabiana Berkana · Harmonia de Vida</p>
       <p>Você recebeu este e-mail automaticamente ao finalizar seu diagnóstico.</p>
     </div>
   </div>
@@ -276,7 +276,7 @@ app.post('/api/send-report', async (req: Request, res: Response) => {
     const avgNum = Number(average) || 5;
 
     const clientFocusArea = req.body.focusArea || 'Não especificada';
-    const clientTitle = req.body.title || 'Diagnóstico da Harmonia Energética (Método Berkana)';
+    const clientTitle = req.body.title || 'Diagnóstico da Harmonia Energética';
 
     // 1. Template for Fabiana Berkana (Admin Notification)
     const adminHtml = `
@@ -284,7 +284,7 @@ app.post('/api/send-report', async (req: Request, res: Response) => {
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Novo Diagnóstico - Método Berkana</title>
+  <title>Novo Diagnóstico - Harmonia Energética</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #FAF5F8; color: #2D1A2E; margin: 0; padding: 20px; }
     .box { max-width: 580px; margin: 0 auto; background: #FFF; border: 1px solid #F0D5E5; border-radius: 16px; padding: 28px; }
@@ -359,7 +359,7 @@ app.post('/api/send-report', async (req: Request, res: Response) => {
 
       await dispatchEmail({
         to: clientEmail,
-        subject: `✦ Seu Mapeamento Energético – Método Berkana (Frequência: ${frequencyName || 'Harmonia'})`,
+        subject: `✦ Seu Mapeamento Energético – Harmonia de Vida (Frequência: ${frequencyName || 'Harmonia'})`,
         html: clientHtml,
       });
     }

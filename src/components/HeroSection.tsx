@@ -18,7 +18,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-7 flex flex-col items-start space-y-6">
             <div className="inline-flex items-center gap-2 text-xs font-semibold text-teal-800 bg-teal-100/70 border border-teal-200/60 px-3 py-1 rounded-md">
               <Sparkles className="w-3.5 h-3.5 text-teal-700" />
-              <span>Life Wheel Harmony Guide · Método Berkana</span>
+              <span>Life Wheel Harmony Guide · Harmonia de Vida</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-[1.15]" style={{ textWrap: 'balance' }}>

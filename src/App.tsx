@@ -100,11 +100,11 @@ const FREQUENCIES = [
 ];
 
 const WHATSAPP_URL =
-  'https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20meu%20Diagn%C3%B3stico%20da%20Harmonia%20Energ%C3%A9tica%20pelo%20M%C3%A9todo%20Berkana%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o.';
+  'https://wa.me/?text=Ol%C3%A1%20Fabiana%2C%20fiz%20meu%20Diagn%C3%B3stico%20da%20Harmonia%20Energ%C3%A9tica%20e%20gostaria%20de%20agendar%20uma%20sess%C3%A3o.';
 
 // Returns dynamic title according to selected life focus area
 export function getAppTitle(focusArea: LifeFocusArea): { main: string; complement: string } {
-  const base = 'Diagnóstico da Harmonia Energética (Método Berkana)';
+  const base = 'Diagnóstico da Harmonia Energética';
   if (focusArea === 'Outro') {
     return { main: base, complement: '' };
   }
@@ -319,10 +319,12 @@ function WelcomeView({
 
       {/* Main Dynamic Title according to chosen life focus area */}
       <h1 className="mt-6 text-3xl font-medium leading-tight text-foreground sm:text-5xl max-w-2xl">
-        Diagnóstico da Harmonia Energética{' '}
-        <span className="block text-2xl sm:text-4xl mt-1 text-primary italic font-display">
-          (Método Berkana){titleInfo.complement}
-        </span>
+        Diagnóstico da Harmonia Energética
+        {titleInfo.complement ? (
+          <span className="block text-2xl sm:text-4xl mt-1 text-primary italic font-display">
+            {titleInfo.complement.replace(/^\s*–\s*/, '')}
+          </span>
+        ) : null}
       </h1>
 
       <p className="mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
@@ -394,7 +396,7 @@ function WelcomeView({
         </ActionButton>
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        12 pilares fundamentais · cerca de 2 minutos
+        12 pilares fundamentais · em 2 minutos
       </p>
     </section>
   );

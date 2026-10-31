@@ -1,6 +1,6 @@
 {
-  "name": "Diagnóstico da Harmonia Energética (Método Berkana)",
-  "description": "Diagnóstico da Harmonia Energética pelo Método Berkana. Mapeie os 12 pilares essenciais da sua vida na escala de 1 a 9.",
+  "name": "Diagnóstico da Harmonia Energética",
+  "description": "Diagnóstico da Harmonia Energética. Mapeie os 12 pilares essenciais da sua vida na escala de 1 a 9.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
