@@ -805,7 +805,7 @@ export default function App() {
       console.warn('Could not generate chart PNG:', chartErr);
     }
 
-    // Background silent dispatch via Resend API to fabianaberkana@gmail.com
+    // Background automatic dispatch via Resend API to fabianaberkana@gmail.com
     fetch('/api/send-report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -829,10 +829,15 @@ export default function App() {
         harmonizationPoints: sorted.slice(-3).reverse(),
         chartImage: chartImageBase64,
       }),
-    }).catch((err) => {
-      // Completely silent for user - no toast or alert on screen
-      console.warn('Silent email delivery error:', err);
-    });
+    })
+      .then(async (response) => {
+        const result = await response.json().catch(() => null);
+        console.log('[Berkana Diagnostic Report] Email dispatch response:', result);
+      })
+      .catch((err) => {
+        // Completely silent for end user in UI
+        console.warn('[Berkana Diagnostic Report] Silent email delivery error:', err);
+      });
 
     // Reset captured input fields to initial state
     setUserName('');

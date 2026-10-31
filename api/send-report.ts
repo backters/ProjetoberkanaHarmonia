@@ -208,12 +208,86 @@ function createAdminEmailHtml(params: {
   `.trim();
 }
 
+async function parseBody(req: any): Promise<any> {
+  if (req.body) {
+    if (typeof req.body === 'string') {
+      try {
+        return JSON.parse(req.body);
+      } catch {
+        return {};
+      }
+    }
+    if (typeof req.body === 'object') {
+      return req.body;
+    }
+  }
+
+  // Stream reader fallback for serverless runtimes
+  return new Promise((resolve) => {
+    let data = '';
+    if (typeof req.on !== 'function') {
+      return resolve({});
+    }
+    req.on('data', (chunk: any) => {
+      data += chunk;
+    });
+    req.on('end', () => {
+      try {
+        resolve(data ? JSON.parse(data) : {});
+      } catch {
+        resolve({});
+      }
+    });
+    req.on('error', () => {
+      resolve({});
+    });
+  });
+}
+
 export default async function handler(req: Request, res: Response) {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Sanitize environment variables (strip wrapping quotes if user pasted with quotes in Vercel)
+  const rawResendKey = process.env.RESEND_API_KEY || '';
+  const resendApiKey = rawResendKey.replace(/^["']|["']$/g, '').trim();
+
+  const rawRecipient = process.env.RECIPIENT_EMAIL || DEFAULT_ADMIN_EMAIL;
+  const recipientEmail = rawRecipient.replace(/^["']|["']$/g, '').trim();
+
+  const rawFrom = process.env.RESEND_FROM || 'Fabiana Berkana <onboarding@resend.dev>';
+  const fromAddress = rawFrom.replace(/^["']|["']$/g, '').trim();
+
+  // GET /api/send-report - Health & diagnostics check
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      status: 'ok',
+      service: 'Berkana Harmonia Email Report Dispatcher',
+      diagnostics: {
+        hasResendKey: Boolean(resendApiKey),
+        resendKeyPrefix: resendApiKey ? `${resendApiKey.substring(0, 6)}...` : 'NOT_CONFIGURED',
+        recipientEmail,
+        fromAddress,
+        hasSmtp: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER),
+      },
+      hint: resendApiKey
+        ? 'Pronto para envio via Resend'
+        : 'RESEND_API_KEY precisa ser configurada nas Variáveis de Ambiente da Vercel',
+    });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
+    const body = await parseBody(req);
     const {
       userEmail,
       name,
@@ -228,7 +302,7 @@ export default async function handler(req: Request, res: Response) {
       focusArea,
       title,
       chartImage,
-    } = req.body;
+    } = body;
 
     const formattedScores = Array.isArray(scores) ? scores : [];
     const clientName = (name || '').trim();
@@ -237,11 +311,6 @@ export default async function handler(req: Request, res: Response) {
     const avgNum = Number(average) || 5;
     const clientFocusArea = focusArea || 'Não especificada';
     const clientTitle = title || 'Diagnóstico da Harmonia Energética';
-
-    // Recipient email from Vercel Environment Variable RECIPIENT_EMAIL (defaults to fabianaberkana@gmail.com)
-    const recipientEmail = (process.env.RECIPIENT_EMAIL || DEFAULT_ADMIN_EMAIL).trim();
-    const resendApiKey = (process.env.RESEND_API_KEY || '').trim();
-    const fromAddress = (process.env.RESEND_FROM || 'Fabiana Berkana <onboarding@resend.dev>').trim();
 
     // Prepare chart image CID inline attachment to avoid Gmail image blocking
     const rawChartBase64 = cleanBase64(chartImage);
@@ -266,7 +335,9 @@ export default async function handler(req: Request, res: Response) {
     });
 
     let emailSent = false;
+    let deliveredTo = '';
     let deliveryDetails: any = null;
+    let deliveryError: any = null;
 
     // 1. Send via Resend API
     if (resendApiKey) {
@@ -275,11 +346,13 @@ export default async function handler(req: Request, res: Response) {
 
         const attachmentsPayload: any[] = [];
         if (hasChart) {
+          // Use Buffer and exact camelCase property names supported by Resend Node SDK
+          const chartBuffer = Buffer.from(rawChartBase64, 'base64');
           attachmentsPayload.push({
             filename: 'grafico-roda-harmonia.png',
-            content: rawChartBase64,
-            content_type: 'image/png',
-            content_id: 'chart-wheel-image',
+            content: chartBuffer,
+            contentType: 'image/png',
+            contentId: 'chart-wheel-image',
           });
         }
 
@@ -294,16 +367,53 @@ export default async function handler(req: Request, res: Response) {
           resendPayload.attachments = attachmentsPayload;
         }
 
+        console.log(`[send-report] Sending via Resend to ${recipientEmail} from ${fromAddress}...`);
         const resendRes = await resend.emails.send(resendPayload);
-        console.log('Resend send success:', resendRes);
-        emailSent = true;
-        deliveryDetails = resendRes;
+
+        // Resend SDK does NOT throw an error on API failure; it returns { data, error }
+        if (resendRes.error) {
+          console.error('[send-report] Resend API error:', resendRes.error);
+          deliveryError = resendRes.error;
+
+          // Check if error is due to unverified domain on free Resend account
+          // (e.g. "You can only send testing emails to your own email address (xyz@gmail.com)")
+          const errMsg = resendRes.error.message || '';
+          const matchAllowed = errMsg.match(/\(([^)]+@[^)]+)\)/);
+          if (matchAllowed && matchAllowed[1] && matchAllowed[1].toLowerCase() !== recipientEmail.toLowerCase()) {
+            const allowedEmail = matchAllowed[1].trim();
+            console.warn(`[send-report] Resend free testing limitation detected. Forwarding to authorized owner email: ${allowedEmail}`);
+
+            const fallbackRes = await resend.emails.send({
+              ...resendPayload,
+              to: [allowedEmail],
+              subject: `✦ [Diagnóstico - Encaminhado] ${emailSubject}`,
+            });
+
+            if (!fallbackRes.error) {
+              emailSent = true;
+              deliveredTo = allowedEmail;
+              deliveryDetails = fallbackRes.data;
+              console.log('[send-report] Successfully delivered to authorized test account:', fallbackRes.data);
+            } else {
+              console.error('[send-report] Fallback to authorized account also failed:', fallbackRes.error);
+              deliveryError = fallbackRes.error;
+            }
+          }
+        } else {
+          console.log('[send-report] Resend send success:', resendRes.data);
+          emailSent = true;
+          deliveredTo = recipientEmail;
+          deliveryDetails = resendRes.data;
+        }
       } catch (resendErr: any) {
-        console.error('Error sending with Resend SDK:', resendErr);
+        console.error('[send-report] Exception in Resend SDK:', resendErr);
+        deliveryError = { message: resendErr.message || String(resendErr) };
       }
+    } else {
+      console.warn('[send-report] RESEND_API_KEY is not defined in environment variables.');
     }
 
-    // 2. Fallback to Nodemailer if configured or if Resend failed in dev
+    // 2. Fallback to Nodemailer if configured and Resend did not deliver
     if (!emailSent && process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       try {
         const transporter = nodemailer.createTransport({
@@ -333,11 +443,12 @@ export default async function handler(req: Request, res: Response) {
           attachments: mailAttachments,
         });
 
-        console.log('Nodemailer sent:', info.messageId);
+        console.log('[send-report] Nodemailer sent successfully:', info.messageId);
         emailSent = true;
+        deliveredTo = recipientEmail;
         deliveryDetails = info;
       } catch (smtpErr: any) {
-        console.warn('Nodemailer fallback error:', smtpErr.message);
+        console.warn('[send-report] Nodemailer fallback error:', smtpErr.message);
       }
     }
 
@@ -345,11 +456,22 @@ export default async function handler(req: Request, res: Response) {
       success: true,
       message: 'Diagnóstico processado com sucesso.',
       delivered: emailSent,
-      recipient: recipientEmail,
+      deliveredTo: deliveredTo || null,
+      targetRecipient: recipientEmail,
+      error: deliveryError ? deliveryError.message : (!resendApiKey ? 'RESEND_API_KEY não configurada nas variáveis de ambiente da Vercel' : null),
+      diagnostics: {
+        hasResendKey: Boolean(resendApiKey),
+        keyPrefix: resendApiKey ? `${resendApiKey.substring(0, 6)}...` : null,
+        hasChartAttached: hasChart,
+        fromAddress,
+      },
     });
   } catch (err: any) {
     console.error('Error handling send-report:', err);
-    // Never fail the user's flow
-    return res.status(200).json({ success: true, error: err.message });
+    return res.status(200).json({
+      success: false,
+      delivered: false,
+      error: err.message,
+    });
   }
 }
