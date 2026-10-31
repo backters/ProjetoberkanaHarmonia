@@ -39,11 +39,11 @@ export const LIFE_AREAS: LifeArea[] = [
   // 1. Pessoal
   {
     id: 'saude_disposicao',
-    name: 'Saúde & Disposição',
+    name: 'Saúde e Disposição',
     pillar: 'pessoal',
     pillarName: 'Pessoal',
-    description: 'Nível de energia física, qualidade do sono, alimentação e vigor diário.',
-    guidingQuestion: 'Quão satisfeito você está com sua vitalidade física, sono e energia no dia a dia?',
+    description: 'Como está a sua vitalidade, a sua energia física e a leveza ao lidar com esta questão?',
+    guidingQuestion: 'Como está a sua vitalidade, a sua energia física e a leveza ao lidar com esta questão?',
     detailedQuestions: [
       'Você acorda descansado e com energia para as atividades do dia?',
       'Pratica atividades físicas regulares e cuida de exames preventivos?',
@@ -59,8 +59,8 @@ export const LIFE_AREAS: LifeArea[] = [
     name: 'Desenvolvimento Intelectual',
     pillar: 'pessoal',
     pillarName: 'Pessoal',
-    description: 'Estudos, leitura, novos aprendizados e evolução contínua da sua mente.',
-    guidingQuestion: 'Você dedica tempo intencional para aprender coisas novas e expandir horizontes?',
+    description: 'O quanto você investe em aprendizado, clareza mental e evolução em relação a este tema?',
+    guidingQuestion: 'O quanto você investe em aprendizado, clareza mental e evolução em relação a este tema?',
     detailedQuestions: [
       'Costuma ler livros, fazer cursos ou consumir conteúdos enriquecedores?',
       'Sente que sua mente é estimulada com desafios intelectuais?',
@@ -76,8 +76,8 @@ export const LIFE_AREAS: LifeArea[] = [
     name: 'Equilíbrio Emocional',
     pillar: 'pessoal',
     pillarName: 'Pessoal',
-    description: 'Capacidade de lidar com o estresse, autoconhecimento e serenidade sob pressão.',
-    guidingQuestion: 'Como você avalia sua capacidade de gerenciar ansiedade, estresse e sentimentos difíceis?',
+    description: 'Como você lida com os desafios e os momentos de pressão nesta área, sem perder a sua centralidade?',
+    guidingQuestion: 'Como você lida com os desafios e os momentos de pressão nesta área, sem perder a sua centralidade?',
     detailedQuestions: [
       'Consegue manter a calma em momentos de tensão ou imprevistos?',
       'Tem momentos de clareza mental e serenidade interna?',
@@ -92,11 +92,11 @@ export const LIFE_AREAS: LifeArea[] = [
   // 2. Profissional
   {
     id: 'realizacao_proposito',
-    name: 'Realização & Carreira',
+    name: 'Realização Profissional',
     pillar: 'profissional',
     pillarName: 'Profissional',
-    description: 'Sentimento de sentido no trabalho, progressão profissional e uso dos seus talentos.',
-    guidingQuestion: 'O seu trabalho atual está alinhado com suas forças, talentos e objetivos de vida?',
+    description: 'O quanto você se sente realizada, motivada e produtiva em relação a esta escolha?',
+    guidingQuestion: 'O quanto você se sente realizada, motivada e produtiva em relação a esta escolha?',
     detailedQuestions: [
       'Você sente orgulho e entusiasmo pelo trabalho que realiza?',
       'Visualiza oportunidades claras de crescimento na sua carreira?',
@@ -112,8 +112,8 @@ export const LIFE_AREAS: LifeArea[] = [
     name: 'Recursos Financeiros',
     pillar: 'profissional',
     pillarName: 'Profissional',
-    description: 'Segurança financeira, gestão consciente, reservas de emergência e investimentos.',
-    guidingQuestion: 'Qual seu grau de tranquilidade em relação às suas finanças e planejamento futuro?',
+    description: 'Como você se sente em relação à estabilidade, à prosperidade e ao fluxo de recursos ligados a este tema?',
+    guidingQuestion: 'Como você se sente em relação à estabilidade, à prosperidade e ao fluxo de recursos ligados a este tema?',
     detailedQuestions: [
       'Sua renda cobre seus custos de vida com tranquilidade e sobra para poupar?',
       'Possui uma reserva de segurança para emergências e imprevistos?',
@@ -129,8 +129,8 @@ export const LIFE_AREAS: LifeArea[] = [
     name: 'Contribuição Social',
     pillar: 'profissional',
     pillarName: 'Profissional',
-    description: 'Impacto positivo no coletivo, voluntariado, mentoria e construção de legado.',
-    guidingQuestion: 'Você sente que seus atos e trabalho deixam uma marca positiva na comunidade?',
+    description: 'Qual é a sensação de pertencimento, valor e impacto positivo que você percebe nesta área da sua vida?',
+    guidingQuestion: 'Qual é a sensação de pertencimento, valor e impacto positivo que você percebe nesta área da sua vida?',
     detailedQuestions: [
       'Dedica tempo, recursos ou atenção para ajudar causas ou pessoas necessitadas?',
       'Enxerga um impacto social positivo gerado pelo seu esforço?',
@@ -145,11 +145,11 @@ export const LIFE_AREAS: LifeArea[] = [
   // 3. Relacionamentos
   {
     id: 'familia',
-    name: 'Família & Convivência',
+    name: 'Relacionamento Familiar',
     pillar: 'relacionamentos',
     pillarName: 'Relacionamentos',
-    description: 'Harmonia, diálogo e conexão com pais, filhos, irmãos ou figuras familiares.',
-    guidingQuestion: 'Como está o clima, o respeito mútuo e a cumplicidade no seu ambiente familiar?',
+    description: 'Como está a harmonia, a base e a fluidez das relações que sustentam este aspecto da sua vida?',
+    guidingQuestion: 'Como está a harmonia, a base e a fluidez das relações que sustentam este aspecto da sua vida?',
     detailedQuestions: [
       'Consegue ter conversas sinceras e momentos acolhedores em família?',
       'Há equilíbrio entre afeto, limites e presença genuína?',
@@ -162,11 +162,11 @@ export const LIFE_AREAS: LifeArea[] = [
   },
   {
     id: 'amor_afeto',
-    name: 'Amor & Afeto',
+    name: 'Relacionamento Amoroso',
     pillar: 'relacionamentos',
     pillarName: 'Relacionamentos',
-    description: 'Cumplicidade amorosa, intimidade, confiança e respeito a dois (ou autoamor pleno).',
-    guidingQuestion: 'Qual o grau de satisfação com sua vida afetiva, troca de carinho e intimidade?',
+    description: 'Como você avalia a troca de afeto, a cumplicidade e o equilíbrio entre dar e receber nesta área?',
+    guidingQuestion: 'Como você avalia a troca de afeto, a cumplicidade e o equilíbrio entre dar e receber nesta área?',
     detailedQuestions: [
       'Existe escuta ativa, companheirismo e diálogo honesto com seu parceiro(a)?',
       'Caso solteiro(a), você cultiva amor-próprio e clareza sobre o que busca?',
@@ -179,11 +179,11 @@ export const LIFE_AREAS: LifeArea[] = [
   },
   {
     id: 'vida_social',
-    name: 'Vida Social & Amizades',
+    name: 'Vida Social',
     pillar: 'relacionamentos',
     pillarName: 'Relacionamentos',
-    description: 'Amizades leais, momentos de descontração e rede de apoio comunitária.',
-    guidingQuestion: 'Você tem amigos em quem confia e momentos agradáveis de conexão humana?',
+    description: 'De que forma as suas trocas e o apoio das pessoas ao redor influenciam positivamente esta área?',
+    guidingQuestion: 'De que forma as suas trocas e o apoio das pessoas ao redor influenciam positivamente esta área?',
     detailedQuestions: [
       'Mantém contato regular com amigos que elevam sua energia?',
       'Tem alguém a quem recorrer sem filtros nos momentos de vulnerabilidade?',
@@ -198,11 +198,11 @@ export const LIFE_AREAS: LifeArea[] = [
   // 4. Qualidade de Vida
   {
     id: 'hobbies_lazer',
-    name: 'Hobbies & Lazer',
+    name: 'Hobbies e Diversão',
     pillar: 'qualidade',
     pillarName: 'Qualidade de Vida',
-    description: 'Tempo para relaxar, criar, brincar, apreciar arte, viajar e recarregar as energias.',
-    guidingQuestion: 'Você tem tempo de qualidade para atividades que te dão pura alegria desinteressada?',
+    description: 'Você consegue encontrar momentos de leveza, prazer e descontração dentro desta área?',
+    guidingQuestion: 'Você consegue encontrar momentos de leveza, prazer e descontração dentro desta área?',
     detailedQuestions: [
       'Dedica momentos regulares na semana para seus passatempos favoritos?',
       'Consegue se desconectar das obrigações e curtir momentos de ócio criativo?',
@@ -215,11 +215,11 @@ export const LIFE_AREAS: LifeArea[] = [
   },
   {
     id: 'espiritualidade',
-    name: 'Espiritualidade & Sentido',
+    name: 'Espiritualidade',
     pillar: 'qualidade',
     pillarName: 'Qualidade de Vida',
-    description: 'Conexão com algo maior, paz espiritual, rituais diários e propósito existencial.',
-    guidingQuestion: 'Como você cultiva sua fé, momentos de silêncio, gratidão e conexão com o sagrado?',
+    description: 'O quanto você sente que este aspecto da sua vida está alinhado com o seu propósito maior e com a sua verdade?',
+    guidingQuestion: 'O quanto você sente que este aspecto da sua vida está alinhado com o seu propósito maior e com a sua verdade?',
     detailedQuestions: [
       'Reserva momentos para oração, meditação, contemplação ou silêncio?',
       'Sente gratidão genuína pelas pequenas coisas do seu dia?',
@@ -232,11 +232,11 @@ export const LIFE_AREAS: LifeArea[] = [
   },
   {
     id: 'ambiente_espaco',
-    name: 'Ambiente Físico & Lar',
+    name: 'Plenitude e Felicidade',
     pillar: 'qualidade',
     pillarName: 'Qualidade de Vida',
-    description: 'Ordem, beleza, conforto, segurança e aconchego nos lugares onde você vive e trabalha.',
-    guidingQuestion: 'O seu lar e local de trabalho te trazem conforto, paz, inspiração e organização?',
+    description: 'O quanto você se sente realizada, alegre e em paz com a área que está analisando?',
+    guidingQuestion: 'O quanto você se sente realizada, alegre e em paz com a área que está analisando?',
     detailedQuestions: [
       'Seu espaço de descanso é silencioso, limpo e aconchegante?',
       'Seu local de trabalho favorece a concentração e a criatividade?',

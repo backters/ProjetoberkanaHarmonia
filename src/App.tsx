@@ -14,73 +14,73 @@ const PILLARS: PillarDescription[] = [
     id: 1,
     name: 'Plenitude e Felicidade',
     summary:
-      'Representa o grau de satisfação e alegria com a própria vida. Envolve sentir-se realizado, conectado consigo mesmo e grato pelo caminho trilhado.',
+      'O quanto você se sente realizada, alegre e em paz com a área que está analisando?',
   },
   {
     id: 2,
     name: 'Equilíbrio Emocional',
     summary:
-      'Refere-se à capacidade de lidar com emoções e desafios sem desestabilizar o bem-estar. Inclui autocontrole, resiliência e a habilidade de transformar situações difíceis em aprendizado.',
+      'Como você lida com os desafios e os momentos de pressão nesta área, sem perder a sua centralidade?',
   },
   {
     id: 3,
     name: 'Desenvolvimento Intelectual',
     summary:
-      'Relaciona-se ao crescimento mental e à busca contínua por conhecimento. O aprendizado constante expande horizontes, fortalece a mente e abre novas possibilidades na vida.',
+      'O quanto você investe em aprendizado, clareza mental e evolução em relação a este tema?',
   },
   {
     id: 4,
     name: 'Contribuição Social',
     summary:
-      'Avalia o impacto positivo na sociedade e a sensação de pertencimento. Doar tempo, conhecimento ou energia para ajudar o próximo fortalece o sentido de propósito e a conexão com o mundo.',
+      'Qual é a sensação de pertencimento, valor e impacto positivo que você percebe nesta área da sua vida?',
   },
   {
     id: 5,
     name: 'Saúde e Disposição',
     summary:
-      'Representa a vitalidade e os cuidados com o corpo. Uma boa saúde física influencia diretamente o bem-estar emocional, a produtividade e a capacidade de aproveitar a vida.',
+      'Como está a sua vitalidade, a sua energia física e a leveza ao lidar com esta questão?',
   },
   {
     id: 6,
     name: 'Vida Social',
     summary:
-      'Reflete a qualidade dos relacionamentos interpessoais e a capacidade de construir conexões significativas. A troca de experiências e o apoio mútuo são fundamentais para o equilíbrio emocional.',
+      'De que forma as suas trocas e o apoio das pessoas ao redor influenciam positivamente esta área?',
   },
   {
     id: 7,
     name: 'Espiritualidade',
     summary:
-      'Relaciona-se à conexão com o universo e com o próprio propósito. Ter uma prática espiritual, independente de crença religiosa, traz clareza, paz e alinhamento energético.',
+      'O quanto você sente que este aspecto da sua vida está alinhado com o seu propósito maior e com a sua verdade?',
   },
   {
     id: 8,
     name: 'Relacionamento Familiar',
     summary:
-      'Representa a harmonia e a qualidade das relações com a família. Equilibrar laços familiares, resolver conflitos e fortalecer vínculos contribui para uma base emocional sólida.',
+      'Como está a harmonia, a base e a fluidez das relações que sustentam este aspecto da sua vida?',
   },
   {
     id: 9,
     name: 'Relacionamento Amoroso',
     summary:
-      'Refere-se à vida afetiva e à troca energética dentro de uma relação amorosa. Inclui a construção de confiança, cumplicidade e equilíbrio entre dar e receber amor.',
+      'Como você avalia a troca de afeto, a cumplicidade e o equilíbrio entre dar e receber nesta área?',
   },
   {
     id: 10,
     name: 'Recursos Financeiros',
     summary:
-      'Avalia a estabilidade e segurança financeira. A relação com o dinheiro reflete diretamente no nível de tranquilidade e liberdade para realizar sonhos e projetos.',
+      'Como você se sente em relação à estabilidade, à prosperidade e ao fluxo de recursos ligados a este tema?',
   },
   {
     id: 11,
     name: 'Hobbies e Diversão',
     summary:
-      'Representa o tempo dedicado ao lazer e às atividades que trazem prazer e leveza para o dia a dia. Ter momentos de diversão é essencial para manter a energia em alta.',
+      'Você consegue encontrar momentos de leveza, prazer e descontração dentro desta área?',
   },
   {
     id: 12,
     name: 'Realização Profissional',
     summary:
-      'Relaciona-se à satisfação e propósito na carreira. Estar alinhado com a missão de vida no trabalho gera motivação, crescimento e um fluxo positivo de energia.',
+      'O quanto você se sente realizada, motivada e produtiva em relação a esta escolha?',
   },
 ];
 
@@ -650,7 +650,7 @@ function ResultView({
         {/* Exemplification Glossary of All 12 Areas */}
         <div className="mt-8 pt-6 border-t border-border/70">
           <h3 className="text-xl font-semibold text-foreground mb-4">
-            ✦ O que representa cada uma das 12 áreas:
+            ✦ Perguntas de reflexão de cada uma das 12 áreas:
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs leading-relaxed text-muted-foreground">
             {PILLARS.map((p) => {
