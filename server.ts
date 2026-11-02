@@ -282,6 +282,9 @@ Escreva uma análise concisa e profundamente inspiradora (máximo 3 frases) em t
   }
 });
 
+// Serve documentation files
+app.use('/Docs', express.static(path.join(__dirname, 'Docs')));
+
 // Setup Vite or Static Server
 async function startServer() {
   const isProduction = process.env.NODE_ENV === 'production';
